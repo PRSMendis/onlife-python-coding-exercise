@@ -15,8 +15,8 @@ def test_split_single_time_returns_two_equal_cables():
     assert_that(result).is_length(2)
     assert_that(result[0].length).is_equal_to(5)
     assert_that(result[1].length).is_equal_to(5)
-    assert_that(result[0].name).is_equal_to("coconuts-00")
-    assert_that(result[1].name).is_equal_to("coconuts-01")
+    assert_that(result[0].name).is_equal_to("coconuts-0")
+    assert_that(result[1].name).is_equal_to("coconuts-1")
 
 
 def test_split_multiple_times_creates_correct_number_of_cables():
