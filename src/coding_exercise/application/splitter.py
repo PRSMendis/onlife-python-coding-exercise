@@ -73,7 +73,11 @@ class Splitter:
         split_cables = []
 
         for i in range(number_of_splits):
-            cable_name = f"{original_cable.name}-{i}"
+            cable_name = (
+                f"{original_cable.name}-{i:01d}"
+                if number_of_splits < 10
+                else f"{original_cable.name}-{i:02d}"
+            )
             split_cables.append(Cable(split_length, cable_name))
 
         return split_cables

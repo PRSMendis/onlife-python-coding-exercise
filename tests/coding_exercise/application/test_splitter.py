@@ -25,7 +25,7 @@ def test_split_multiple_times_creates_correct_number_of_cables():
     assert_that(result).is_length(5)
     assert_that([cable.length for cable in result]).is_equal_to([1, 1, 1, 1, 1])
     assert_that([cable.name for cable in result]).is_equal_to(
-        ["coconuts-00", "coconuts-01", "coconuts-02", "coconuts-03", "coconuts-04"]
+        ["coconuts-0", "coconuts-1", "coconuts-2", "coconuts-3", "coconuts-4"]
     )
 
 
