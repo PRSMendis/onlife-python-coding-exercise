@@ -62,6 +62,31 @@ class Splitter:
         """Calculate the split length."""
         return total_length // (times + 1)
 
+    def _cable_namer(self, original_cable: Cable, i: int, number_of_splits: int) -> str:
+        """
+        Generate a name for the split cable. This should add padding if necessary.
+
+        Args:
+            original_cable (Cable): The original cable object.
+            i (int): The index of the split cable.
+            number_of_splits (int): The total number of splits.
+
+        Returns:
+            str: The name of the split cable.
+
+        Examples:
+            >>> original_cable = Cable(name="Cable1")
+            >>> _cable_namer(original_cable, 1, 9)
+            'Cable1-1'
+
+            >>> original_cable = Cable(name="Cable2")
+            >>> _cable_namer(original_cable, 21, 100)
+            'Cable2-021'
+        """
+        width = len(str(number_of_splits))
+
+        return f"{original_cable.name}-{i:0{width}d}"
+
     def _generate_split_cables(
         self, original_cable: Cable, split_length: int, times: int
     ) -> list[Cable]:
@@ -69,15 +94,29 @@ class Splitter:
 
         # Calculate the number of full-length splits and remainder
         number_of_splits = times + 1
+        total_splits_length = split_length * number_of_splits
+        remainder = original_cable.length - total_splits_length
 
         split_cables = []
 
         for i in range(number_of_splits):
-            cable_name = (
-                f"{original_cable.name}-{i:01d}"
-                if number_of_splits < 10
-                else f"{original_cable.name}-{i:02d}"
+            cable_name = self._cable_namer(original_cable, i, number_of_splits)
+            split_cable = Cable(name=cable_name, length=split_length)
+            split_cables.append(split_cable)
+
+        # Handle remainder by splitting into same-length cables as possible
+        while remainder >= split_length:
+            cable_name = self._cable_namer(
+                original_cable, len(split_cables), number_of_splits + 1
             )
-            split_cables.append(Cable(split_length, cable_name))
+            split_cables.append(Cable(name=cable_name, length=split_length))
+            remainder -= split_length
+
+        # Add any final remainder cable if length > 0
+        if remainder > 0:
+            cable_name = self._cable_namer(
+                original_cable, len(split_cables), number_of_splits + 1
+            )
+            split_cables.append(Cable(name=cable_name, length=remainder))
 
         return split_cables
