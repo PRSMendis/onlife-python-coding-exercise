@@ -37,3 +37,7 @@ class Splitter:
         self.__validate(cable, times)
 
         return []
+
+    def _calculate_split_length(self, total_length: int, times: int) -> int:
+        """Calculate the split length."""
+        return total_length // (times + 1)
